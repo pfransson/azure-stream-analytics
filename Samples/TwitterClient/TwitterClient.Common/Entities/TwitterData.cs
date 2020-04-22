@@ -202,16 +202,19 @@ namespace TwitterClient.Common
 
     public class Payload
     {
+        public Int64 ID;
         public DateTime CreatedAt { get; set; }
         public string Topic { get; set; }
 		public int SentimentScore { get; set; }
 		public string Author { get; set; }
 		public string Text { get; set; }
 		public bool SendExtended { get; set; }
+        public string TimeZone{ get; set; }
+        public string Language { get; set; }
 
-		public override string ToString()
+        public override string ToString()
         {
-            return SendExtended ?  new { CreatedAt, Topic, SentimentScore, Author, Text }.ToString() : new { CreatedAt, Topic, SentimentScore }.ToString();
+            return SendExtended ?  new { ID, CreatedAt, Topic, SentimentScore, Author, Text, TimeZone, Language }.ToString() : new { CreatedAt, Topic, SentimentScore }.ToString();
         }
     }
 

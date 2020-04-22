@@ -25,6 +25,7 @@ namespace TwitterClient
         static void Main(string[] args)
         {
             //Configure Twitter OAuth
+            
             var oauthToken = ConfigurationManager.AppSettings["oauth_token"];
             var oauthTokenSecret = ConfigurationManager.AppSettings["oauth_token_secret"];
             var oauthCustomerKey = ConfigurationManager.AppSettings["oauth_consumer_key"];
@@ -50,7 +51,7 @@ namespace TwitterClient
 			var keywords = searchGroups.Contains('|') ? string.Join(",", searchGroups.Split('|')) : searchGroups;
 			var tweet = new Tweet();
 				var datum = tweet.StreamStatuses(new TwitterConfig(oauthToken, oauthTokenSecret, oauthCustomerKey, oauthConsumerSecret,
-				keywords, searchGroups)).Where(e => !string.IsNullOrWhiteSpace(e.Text)).Select(t => Sentiment.ComputeScore(t, searchGroups, mode)).Select(t => new Payload { CreatedAt = t.CreatedAt, Topic = t.Topic, SentimentScore = t.SentimentScore, Author = t.UserName, Text = t.Text, SendExtended = sendExtendedInformation });
+				keywords, searchGroups)).Where(e => !string.IsNullOrWhiteSpace(e.Text)).Select(t => Sentiment.ComputeScore(t, searchGroups, mode)).Select(t => new Payload { ID = t.ID, CreatedAt = t.CreatedAt, Topic = t.Topic, SentimentScore = t.SentimentScore, Author = t.UserName, Text = t.Text, SendExtended = sendExtendedInformation, Language = t.Language,  TimeZone = t.TimeZone });
 				if (removeAllUndefined)
 				{
 					datum = datum.Where(e => e.SentimentScore > -1);
