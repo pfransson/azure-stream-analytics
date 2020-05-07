@@ -17,6 +17,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using TwitterClient.Common;
+using Confluent.Kafka;
+using System.Net;
 
 namespace TwitterClient
 {
@@ -45,10 +47,25 @@ namespace TwitterClient
 			var config = new EventHubConfig();
             config.ConnectionString = ConfigurationManager.AppSettings["EventHubConnectionString"];
             config.EventHubName = ConfigurationManager.AppSettings["EventHubName"];
-		
-            var myEventHubObserver = new EventHubObserver(config, AzureOn);
 
-			var keywords = searchGroups.Contains('|') ? string.Join(",", searchGroups.Split('|')) : searchGroups;
+            //var myTargetObserver = new EventHubObserver(config, AzureOn);
+            var kafkaConfig = new ProducerConfig
+            {
+                BootstrapServers = "pfwstreaming.westeurope.cloudapp.azure.com:9092",
+                //BootstrapServers = "13.81.68.193:9092",
+                ClientId = Dns.GetHostName()
+            };
+            //kafkaConfig.SaslUsername = "pfransson";
+            //kafkaConfig.SaslPassword = "B3rgmanAlfa33";
+            kafkaConfig.SecurityProtocol = SecurityProtocol.Plaintext;
+            //kafkaConfig.SaslMechanism = SaslMechanism.Plain;
+            //kafkaConfig.
+            //kafkaConfig.
+            //kafkaConfig.SaslMechanism = SaslMechanism.Plain;
+
+            var myTargetObserver = new KafkaObserver(kafkaConfig, AzureOn);
+
+            var keywords = searchGroups.Contains('|') ? string.Join(",", searchGroups.Split('|')) : searchGroups;
 			var tweet = new Tweet();
 				var datum = tweet.StreamStatuses(new TwitterConfig(oauthToken, oauthTokenSecret, oauthCustomerKey, oauthConsumerSecret,
 				keywords, searchGroups)).Where(e => !string.IsNullOrWhiteSpace(e.Text)).Select(t => Sentiment.ComputeScore(t, searchGroups, mode)).Select(t => new Payload { ID = t.ID, CreatedAt = t.CreatedAt, Topic = t.Topic, SentimentScore = t.SentimentScore, Author = t.UserName, Text = t.Text, SendExtended = sendExtendedInformation, Language = t.Language,  TimeZone = t.TimeZone });
@@ -56,7 +73,7 @@ namespace TwitterClient
 				{
 					datum = datum.Where(e => e.SentimentScore > -1);
 				}
-				datum.Where(e => e.Topic != "No Match").ToObservable().Subscribe(myEventHubObserver);
+				datum.Where(e => e.Topic != "No Match").ToObservable().Subscribe(myTargetObserver);
         }
     }
 }

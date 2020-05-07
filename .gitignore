@@ -191,3 +191,12 @@ ModelManifest.xml
 /Samples/TelcoDatGeneratorUI/App/TelcoDataGeneratorWPF
 DataGenerators/TwitterClientCore/bin/
 DataGenerators/TwitterClientCore/obj/
+/Samples/TwitterClient/.vs/TwitterClient/v15/Server/sqlite3/storage.ide-wal
+/Samples/TwitterClient/.vs/TwitterClient/v15/Server/sqlite3/storage.ide-shm
+/Samples/TwitterClient/.vs/TwitterClient/v15/Server/sqlite3/storage.ide
+/Samples/TwitterClient/.vs/TwitterClient/v15/Server/sqlite3/db.lock
+/DataGenerators/TwitterClientCore/.vs/TwitterClientCore/v15/Server/sqlite3/storage.ide
+/DataGenerators/TwitterClientCore/.vs/TwitterClientCore/v15/Server/sqlite3/db.lock
+/DataGenerators/TwitterClientCore/.vs/TwitterClientCore/DesignTimeBuild/.dtbcache
+/DataGenerators/TwitterClient/.vs/TwitterClient/v15/Server/sqlite3/db.lock
+/DataGenerators/TwitterClient/.vs/TwitterClient/v15/Server/sqlite3/storage.ide
